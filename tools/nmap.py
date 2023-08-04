@@ -25,7 +25,7 @@ def invoke(vault_path, mode, options):
         if not os.path.exists(host_path):
             os.makedirs(host_path)
         # make a file for each host linked to each service
-        host_file_path = host_path +".md"
+        host_file_path = host_path + ".md"
         with open(host_file_path, "w") as f:
             f.write('\n')
             f.write('\n')
@@ -35,10 +35,10 @@ def invoke(vault_path, mode, options):
             f.write('\n')
             f.write('### Script Results\n')
             for results in scanned_hosts.scripts_results:
-                f.write(scanned_hosts.scripts_results[results]['id'] + ': ' + str(scanned_hosts.scripts_results[results]['output']) + '\n')
-            f.close()
+                f.write(results['id'] + ': ' + str(results['output']) + '\n')
             f.write('\n')
             f.write('### Ports\n')
+            f.close()
         for scanned_services in scanned_hosts.services:
             service_path = os.path.join(host_path, str(scanned_services.port) + ".md")
             with open(service_path, "w") as f:
