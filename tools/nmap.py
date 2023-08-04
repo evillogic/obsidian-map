@@ -29,11 +29,29 @@ def invoke(vault_path, mode, options):
         with open(host_file_path, "w") as f:
             f.write('\n')
             f.write('\n')
+            f.write("Is Up: " + str(scanned_hosts.is_up()) + '\n')
+            f.write("OS: " + ', '.join([str(x) for x in scanned_hosts.os_class_probabilities()]) + '\n')
+            f.write("Hostnames: " + ', '.join([x for x in scanned_hosts.hostnames]) + '\n')
+            f.write('\n')
+            f.write('### Script Results\n')
+            for results in scanned_hosts.scripts_results:
+                f.write(scanned_hosts.scripts_results[results]['id'] + ': ' + str(scanned_hosts.scripts_results[results]['output']) + '\n')
             f.close()
+            f.write('\n')
+            f.write('### Ports\n')
         for scanned_services in scanned_hosts.services:
             service_path = os.path.join(host_path, str(scanned_services.port) + ".md")
             with open(service_path, "w") as f:
-                f.write(str(scanned_services))
+                f.write('State:' + str(scanned_services.state) + '\n')
+                f.write('Reason:' + str(scanned_services.reason) + '\n')
+                f.write('Protocol:' + str(scanned_services.protocol) + '\n')
+                f.write('Service:' + str(scanned_services.service) + '\n')
+                f.write('Banner:' + str(scanned_services.banner) + '\n')
+                f.write(str(scanned_services) + '\n')
+                f.write(scanned_services.banner + '\n')
+                for results in scanned_services.scripts_results:
+                    f.write(str(results) + '\n')
+                
                 f.close()
             local_obsidian_path = "Scan Results/nmap/" + scanned_hosts.address + '/' + str(scanned_services.port)
             with open(host_file_path, "a+") as f:
